@@ -9,6 +9,7 @@ import { AuthModule } from 'src/modules/auth/auth.module';
 import { PostsModule } from 'src/modules/posts/posts.module';
 import { UsersModule } from 'src/modules/users/users.module';
 import { GqlConfigService } from './common/graphql/gql-config.service';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -19,13 +20,14 @@ import { GqlConfigService } from './common/graphql/gql-config.service';
         middlewares: [loggingMiddleware(new Logger('PrismaMiddleware'))], // configure your prisma middleware
       },
     }),
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      useClass: GqlConfigService,
-    }),
+    // GraphQLModule.forRootAsync<ApolloDriverConfig>({
+    //   driver: ApolloDriver,
+    //   useClass: GqlConfigService,
+    // }),
     AuthModule,
     UsersModule,
     PostsModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [],

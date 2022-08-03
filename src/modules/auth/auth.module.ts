@@ -9,6 +9,7 @@ import { AuthResolver } from './auth.resolver';
 import { JwtStrategy } from './jwt.strategy';
 import { SecurityConfig } from 'src/common/configs/config.interface';
 import { AuthController } from './auth.controller';
+import { WsAuthGuard } from 'src/common/guards/ws/ws-jwt.guard';
 
 @Module({
   imports: [
@@ -32,8 +33,9 @@ import { AuthController } from './auth.controller';
     JwtStrategy,
     GqlAuthGuard,
     PasswordService,
+    WsAuthGuard,
   ],
-  exports: [GqlAuthGuard],
+  exports: [GqlAuthGuard, AuthService, WsAuthGuard],
   controllers: [AuthController],
 })
 export class AuthModule {}
