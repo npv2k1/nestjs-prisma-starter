@@ -4,14 +4,20 @@ import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
+  WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { WsAuthGuard } from 'src/common/guards/ws/ws-jwt.guard';
 import { ChatService } from './chat.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
+import { Server } from 'socket.io';
+
 @WebSocketGateway({ namespace: 'chat' })
 export class ChatGateway {
+  @WebSocketServer()
+  server: Server;
+
   constructor(private readonly chatService: ChatService) {}
 
   // @UseGuards(WsAuthGuard)
@@ -21,7 +27,9 @@ export class ChatGateway {
     @ConnectedSocket() client: Socket
   ) {
     console.log('create chat');
-    client.emit('chat', createChatDto);
+    // client.emit('chat', createChatDto);
+    client.broadcast.emit('chat', createChatDto);
+    // this.server.io
 
     return this.chatService.create(createChatDto);
   }
